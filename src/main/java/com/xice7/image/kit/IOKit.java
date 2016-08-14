@@ -1,7 +1,11 @@
 package com.xice7.image.kit;
 
-import java.io.Closeable;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
+import javax.imageio.stream.ImageInputStream;
+import javax.imageio.stream.ImageOutputStream;
 
 /**
  * @author mdc
@@ -9,7 +13,7 @@ import java.io.IOException;
  */
 public class IOKit {
 
-	public static void closeQuietly(Closeable closeable) {
+	public static void closeQuietly(OutputStream closeable) {
         try {
             if (closeable != null) {
                 closeable.close();
@@ -18,4 +22,33 @@ public class IOKit {
             // ignore
         }
     }
+	
+	public static void closeQuietly(InputStream closeable) {
+		try {
+			if (closeable != null) {
+				closeable.close();
+			}
+		} catch (IOException ioe) {
+			// ignore
+		}
+	}
+	
+	public static void closeQuietly(ImageInputStream closeable) {
+		try {
+			if (closeable != null) {
+				closeable.close();
+			}
+		} catch (IOException ioe) {
+			// ignore
+		}
+	}
+	public static void closeQuietly(ImageOutputStream closeable) {
+		try {
+			if (closeable != null) {
+				closeable.close();
+			}
+		} catch (IOException ioe) {
+			// ignore
+		}
+	}
 }

@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.net.URL;
-import java.nio.file.Files;
 
 import javax.imageio.ImageIO;
 
@@ -93,14 +92,20 @@ public class ImageKitReadTest {
 	@Test
 	public void read_Base64(){
 		InputStream asStream = null;
+		InputStream fileStream = null;
+		
 		try {
-			File file = new File(ImageKitReadTest.class.getResource("/base64.txt").toURI());
-			String base64 = StringKit.newStringUtf8(Files.readAllBytes(file.toPath()));
+			fileStream = new FileInputStream(ImageKitReadTest.class.getResource("/base64.txt").getFile());
+			byte[] base64Bytes = new byte[fileStream.available()];
+			fileStream.read(base64Bytes);
+			
+			String base64 = StringKit.newStringUtf8(base64Bytes);
 			ImageKit kit = ImageKit.read(base64);
 			print(kit);
 		} catch (Exception e) {
 			Assert.fail("读取文件发生错误:" + e.getMessage() + ", 异常:" + e.getClass().getName());
 		} finally {
+			IOKit.closeQuietly(fileStream);
 			IOKit.closeQuietly(asStream);
 		}
 	}

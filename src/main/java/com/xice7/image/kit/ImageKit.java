@@ -98,11 +98,14 @@ public class ImageKit {
 	}
 
 	public static ImageKit read(byte[] input) {
-		try (InputStream bytes = new ByteArrayInputStream(input)) {
+		InputStream bytes = null;
+		
+		try {
+			bytes = new ByteArrayInputStream(input);
 			ImageAndFormat imgFmt = getImageAndFormat(bytes);
 			return new ImageKit(imgFmt.image, imgFmt.format);
-		} catch (IOException e) {
-			throw new ImageParseException(e.getMessage(), e);
+		} finally {
+			IOKit.closeQuietly(bytes);
 		}
 	}
 
@@ -199,12 +202,18 @@ public class ImageKit {
 	 * @return
 	 */
 	public byte[] toBytes(ImageType format) {
-		try (ByteArrayOutputStream output = new ByteArrayOutputStream()) {
+		ByteArrayOutputStream output = null;
+		
+		try {
+			output = new ByteArrayOutputStream();
 			ImageIO.write(image, format.getType(), output);
 			return output.toByteArray();
 
 		} catch (Exception e) {
 			throw new ImageParseException(e.getMessage(), e);
+			
+		} finally {
+			IOKit.closeQuietly(output);
 		}
 	}
 
@@ -641,28 +650,19 @@ public class ImageKit {
 			throw new ImageParseException("不支持的图片格式");
 		}
 		
-		switch (type) {
-		case "jpg":
-			return ImageType.JPG;
+		if("jpg".equals(type)) return ImageType.JPG;
 
-		case "jpeg":
-			return ImageType.JPEG;
+		if("jpeg".equals(type)) return ImageType.JPEG;
 
-		case "bmp":
-			return ImageType.BMP;
+		if("bmp".equals(type)) return ImageType.BMP;
 
-		case "wbmp":
-			return ImageType.WBMP;
+		if("wbmp".equals(type)) return ImageType.WBMP;
 
-		case "gif":
-			return ImageType.GIF;
+		if("gif".equals(type)) return ImageType.GIF;
 
-		case "png":
-			return ImageType.PNG;
+		if("png".equals(type)) return ImageType.PNG;
 
-		default:
-			return ImageType.JPEG;
-		}
+		return ImageType.JPEG;
 	}
 
 	/**
@@ -727,14 +727,21 @@ public class ImageKit {
 		g.dispose();
 
 		InputStream input = null;
+		ByteArrayOutputStream out = null;
 
-		try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+		try {
+			out = new ByteArrayOutputStream();
 			ImageIO.write(tag, format.getType(), out);
 
 			input = new ByteArrayInputStream(out.toByteArray());
 			return ImageIO.read(input);
+			
 		} catch (IOException e) {
+			IOKit.closeQuietly(input);
 			throw new ImageParseException(e);
+			
+		} finally {
+			IOKit.closeQuietly(out);
 		}
 	}
 }

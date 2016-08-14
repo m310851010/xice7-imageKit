@@ -114,8 +114,14 @@ public class ZipFilter extends AbstractBufferedImageOp {
 		}
 
 		InputStream stream = null;
-		try (ByteArrayOutputStream bout = new ByteArrayOutputStream(); ImageOutputStream out = ImageIO.createImageOutputStream(bout);) {
-
+		ByteArrayOutputStream bout = null;
+		ImageOutputStream out = null;
+		
+		try {
+			
+			bout = new ByteArrayOutputStream(); 
+			out = ImageIO.createImageOutputStream(bout);
+			
 			if (format == ImageType.GIF) { // gif图片处理
 				format = ImageType.JPEG;
 			}
@@ -153,6 +159,8 @@ public class ZipFilter extends AbstractBufferedImageOp {
 			throw new ImageParseException(e);
 		} finally {
 			IOKit.closeQuietly(stream);
+			IOKit.closeQuietly(bout);
+			IOKit.closeQuietly(out);
 		}
 	}
 
