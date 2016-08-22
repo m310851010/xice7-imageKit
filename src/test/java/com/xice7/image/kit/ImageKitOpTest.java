@@ -20,14 +20,10 @@ public class ImageKitOpTest {
 	ImageKit kit = null;
 
 	@Before
-	public void readImage() {
+	public void readImage() throws URISyntaxException {
 		File file;
-		try {
 			file = new File(ImageKitOpTest.class.getResource(jpgPath).toURI());
 			kit = ImageKit.read(file);
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
-		}
 	}
 
 	// 黑白
