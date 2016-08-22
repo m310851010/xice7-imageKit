@@ -33,6 +33,8 @@ kit.cropCircle(); // 剪切圆形图片
 ```java
 kit.transferTo("result.png"); 
 ```
+预览结果
+![点击次数](src/test/resources)
 
 Ok，演示结束啦……
 
