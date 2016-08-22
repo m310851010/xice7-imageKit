@@ -35,6 +35,7 @@ kit.transferTo("result.png");
 ```
 
 预览结果
+
 ![图片](src/test/resources/cropCircle.png)
 
 Ok，演示结束啦……
