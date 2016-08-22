@@ -33,6 +33,7 @@ kit.cropCircle(); // 剪切圆形图片
 ```java
 kit.transferTo("result.png"); 
 ```
+
 预览结果
 ![图片](src/test/resources/cropCircle.png)
 
