@@ -21,9 +21,8 @@ public class ImageKitOpTest {
 
 	@Before
 	public void readImage() throws URISyntaxException {
-		File file;
-			file = new File(ImageKitOpTest.class.getResource(jpgPath).toURI());
-			kit = ImageKit.read(file);
+		File file= new File(ImageKitOpTest.class.getResource(jpgPath).toURI());
+		kit = ImageKit.read(file);
 	}
 
 	// 黑白
